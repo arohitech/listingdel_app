@@ -24,11 +24,12 @@ const LocalStrategy = require("passport-local");
 const user = require("./models/user.js");
 const {storage} = require("./cloudConfig.js");
 const {MongoClient} = require("mongodb");
+const Mongostore = require("connect-mongo");
 
 
 
 
-const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
+
 
 
 main()
@@ -40,8 +41,11 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(MONGO_URL);
-    
+  await mongoose.connect(process.env.DB_URL,{
+     useNewUrlParser : true,
+     useUnifiedTopology : true,
+  });
+
 }
 
 app.set("view engine", "ejs");
@@ -52,8 +56,18 @@ app.engine("ejs", ejsmate);
 app.use(express.static(path.join(__dirname, "public")));
 
 
+const store = Mongostore.create({
+  mongoUrl: process.env.DB_URL,
+  crypto:{
+    secret:process.env.SECRET,
+  },
+  touchAfter: 24*3600,
+});
+
+
 const sessionoptions =  {
-  secret : "mysecretstring",
+  store,
+  secret :process.env.SECRET,
   resave : false,
   saveUninitialized : true,
   cookie : {

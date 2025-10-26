@@ -60,7 +60,7 @@ listingSchema.post("findOneAndDelete" , async(req,res) => {
 });
 
 
-const Listing = mongoose.model("Listing", listingSchema);
+const Listing = mongoose.model("Listing", listingSchema ,"Listing");
 module.exports = Listing;
 
 //*listing here is a object or model that is storing data schema*//
