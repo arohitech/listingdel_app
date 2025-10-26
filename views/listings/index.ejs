@@ -1,0 +1,106 @@
+<% layout('layouts/boilerplate') %>
+
+  <body>
+
+
+<div class="container d-flex align-items-center" id="toggle">
+
+    <div id="filters" class="d-flex overflow-x-auto flex-grow-1">
+      <div class="filter">
+        <div class="icon"><i class="fa-solid fa-fire"></i></div>
+        <p>trending</p>
+      </div>
+
+       <div class="filter">
+        <div class="icon"><i class="fa-solid fa-bed"></i></div>
+        <p>Rooms</p>
+      </div>
+
+       <div class="filter">
+        <div class="icon"><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic Cities</p>
+      </div>
+
+       <div class="filter">
+        <div class="icon"><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+      </div>
+
+       <div class="filter">
+        <div class="icon"><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castles</p>
+      </div>
+
+       <div class="filter">
+        <div class="icon"><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing Pools</p>
+      </div>
+
+
+        <div class="filter">
+          <div class="icon"><i class="fa-solid fa-campground"></i></div>
+          <p>Camping</p>
+       </div>
+
+         <div class="filter">
+           <div class="icon"><i class="fa-solid fa-cow"></i></div>
+           <p>Farms</p>
+         </div>
+
+         <div class="filter">
+             <div class="icon"><i class="fa-solid fa-snowflake"></i></div>
+             <p>Arctic</p>
+         </div>
+
+      <div class="filter">
+        <div class="icon"><i class="fa-solid fa-umbrella-beach"></i></div>
+        <p>Desserts</p>
+      </div>
+
+      <div class="filter">
+        <div class="icon"><i class="fa-solid fa-igloo"></i></div>
+        <p>Domes</p>
+      </div>
+
+
+</div>
+
+    <div class="tax-toggle">
+       <div class="form-check form-switch">
+          <input class="form-check-input" type="checkbox" role="switch" id="switchCheckDefault">
+          <p>Show taxes</p>
+       </div>
+    </div>
+
+  </div>
+
+
+   <div class="row row-cols-lg-3 row-cols-md-2 row-cols-1 row-cols-sm-1 mt-4">
+      <% for(let listing of allListings) { %>
+    <div class="card col mt-2 listing-card">
+       <img src="<%= listing.image.url %>" class="card-img-top"   alt="listing_image">
+       <div class="card-body">
+         <h5 class="card-title"><%= listing.title %></h5>
+         <p class="card-text">&#8377; <%= listing.price.toLocaleString("en-IN") %>/night<i class="tax-info">&nbsp; &nbsp;+ 18% GST</i></p>
+         <a href="/bylistings/<%= listing._id %>" class="btn btn-dark show-btn">view details</a>
+      </div>
+    </div>
+          <% } %>
+  </div>
+  </body>
+
+
+  <script>
+    let taxswitch = document.getElementById("switchCheckDefault");
+    let taxinfo = document.getElementsByClassName("tax-info");
+    taxswitch.addEventListener("click" ,()=> {
+      for(info of taxinfo){
+        if(info.style.display != "block"){
+        info.style.display = "block";
+      }else{
+        info.style.display = "none";
+      }
+    }
+  });
+
+  </script>
