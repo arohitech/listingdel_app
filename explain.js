@@ -15,3 +15,8 @@ listingSchema.post("findOneAndDelete" , async(req,res) => {
 
 
 //WRAPASYNC function was made so that u dont have to write try catch again and again
+
+
+ // const maptoken ="<%=process.env.MAP_TOKEN %>";
+ // const coordinates = 
+  //"<%-JSON.stringify(listing.geometry.coordinates)%>";
