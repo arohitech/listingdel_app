@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const user = require("../models/user");
+const User = require("../models/user");
 const wrapAsync = require("../utils/wrapAsync");
 const passport = require("passport");
 const { saveRedirectUrl } = require("../middleware");
@@ -11,11 +11,11 @@ router
    .get( (req,res)=> {
      res.render("user/form.ejs");
      })
-     .post(wrapAsync(async(req,res) => {
+     .post(async(req,res) => {
         try{
-           let{username , emailId , password} = req.body;
-           const newuser = new user({username , emailId , password});
-           const registereduser = await user.register(newuser , password);
+           let {username , emailId , password} = req.body;
+           const newuser = new User({username , emailId , password});
+           const registereduser = await User.register(newuser , password);
            req.login(registereduser, (err) => {
            if(err){
                return next(err);
@@ -24,12 +24,13 @@ router
               res.redirect("/bylistings");
             });
               }catch(err){
+                console.error("user regesteration failed:", err);
                req.flash("error" , err.message);
                res.redirect("/signup");
             }
 
    
-         }));
+         });
 
 
 router

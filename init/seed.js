@@ -1,18 +1,19 @@
-
-  require('dotenv').config();
+if(process.env.NODE_ENV !== "production"){
+require('dotenv').config({path:__dirname + '../../.env'});
+}
 
 const mongoose = require("mongoose");
 const {data}= require("./data.js");
 const Listing = require("../models/listing.js");
-const url = process.env.URL;
+const url = process.env.MONGODB_URL;
 
 async function seedDB() {
   await Listing.deleteMany({});
   await Listing.insertMany(data);
   console.log("Database seeded!");
 }
-const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
-mongoose.connect(MONGO_URL)
+
+mongoose.connect(url)
     .then(() => {
         console.log("MongoDB connected");
         seedDB()
