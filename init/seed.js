@@ -12,10 +12,7 @@ async function seedDB() {
   console.log("Database seeded!");
 }
 const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
-mongoose.connect(process.env.DB_URL,{
-     useNewUrlParser : true,
-     useUnifiedTopology : true,
-  })
+mongoose.connect(MONGO_URL)
     .then(() => {
         console.log("MongoDB connected");
         seedDB()

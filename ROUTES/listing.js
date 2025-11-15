@@ -33,6 +33,7 @@ router
    .get( wrapAsync(async (req, res) => {
    
       const allListings = await Listing.find({});
+      console.log(req.user);
       res.render("listings/index.ejs", { allListings});
       req.flash("error");
     }))

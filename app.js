@@ -25,11 +25,12 @@ const user = require("./models/user.js");
 const {storage} = require("./cloudConfig.js");
 const {MongoClient} = require("mongodb");
 const Mongostore = require("connect-mongo");
+const { log } = require('console');
 
 
 
 
-
+const MONGO_URL = "mongodb://127.0.0.1:27017/airbnb";
 
 
 main()
@@ -41,10 +42,7 @@ main()
   });
 
 async function main() {
-  await mongoose.connect(process.env.DB_URL,{
-     useNewUrlParser : true,
-     useUnifiedTopology : true,
-  });
+  await mongoose.connect(MONGO_URL);
 
 }
 
@@ -93,6 +91,7 @@ passport.deserializeUser(user.deserializeUser());
 
 
 app.use((req,res,next) => {
+  console.log(req.user);
   res.locals.currUser = req.user;
   res.locals.success = req.flash("success");
   res.locals.error = req.flash("error");
