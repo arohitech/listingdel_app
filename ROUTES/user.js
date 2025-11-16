@@ -7,53 +7,60 @@ const { saveRedirectUrl } = require("../middleware");
 
 
 router
- .route("/signup")
-   .get( (req,res)=> {
-     res.render("user/form.ejs");
-     })
-     .post(async(req,res) => {
-        try{
-           let {username , emailId , password} = req.body;
-           const newuser = new User({username , emailId , password});
-           const registereduser = await User.register(newuser , password);
-           req.login(registereduser, (err) => {
-           if(err){
-               return next(err);
-            }
-              req.flash("success" , "user registered successfully !");
-              res.redirect("/bylistings");
-            });
-              }catch(err){
-                console.error("user regesteration failed:", err);
-               req.flash("error" , err.message);
-               res.redirect("/signup");
-            }
+  .route("/signup")
+  .get((req, res) => {
+    res.render("user/form.ejs");
+  })
+  .post(async (req, res) => {
+    try {
+      let { username, emailId, password } = req.body;
+      const newuser = new User({ username, emailId, password });
+      const registereduser = await User.register(newuser, password);
+      req.login(registereduser, (err) => {
+        if (err) {
+          return next(err);
+        }
+        req.flash("success", "user registered successfully !");
+        res.redirect("/bylistings");
+      });
+    } catch (err) {
+      console.error("user regesteration failed:", err);
+      req.flash("error", err.message);
+      res.redirect("/signup");
+    }
 
-   
-         });
+
+  });
 
 
 router
- .route("/login")
-   .get( (req,res) => {
+  .route("/login")
+  .get((req, res) => {
     res.render("user/login.ejs");
-    })
-    .post(saveRedirectUrl, passport.authenticate("local",{
-      failureRedirect : "/login",
-      failureFlash : true
-    }),
+  })
+  .post(saveRedirectUrl, passport.authenticate("local", {
+    failureRedirect: "/login",
+    failureFlash: true
+  }),
 
-    async(req,res)=> {
-      req.flash("success" , "welcome back to wanderlust ");
+    async (req, res) => {
+      req.flash("success", "welcome back to wanderlust ");
       const redirecturl = res.locals.redirecturl || "/bylistings";
       res.redirect(redirecturl);
     }
-   );
+  );
 
-router.get("/logout" , (req,res) => {
-
-    req.flash("success" , "successfully logged out");
-    res.redirect("/bylistings");
+router.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+ req.flash("success", "successfully logged out");
+    req.session.destroy(() => {
+     
+      res.redirect("/bylistings");
+    });
+  });
 
 });
 
